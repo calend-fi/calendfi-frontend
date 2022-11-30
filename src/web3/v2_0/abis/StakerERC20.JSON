@@ -1,0 +1,455 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "factory_",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "projectID",
+                "type": "uint256"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "rewardAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "rewardToken",
+                "type": "address"
+            }
+        ],
+        "name": "ActivityAddedEvt",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "RewardPaidEvt",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "StakedEvt",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": true,
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            }
+        ],
+        "name": "WithdrawEvt",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "activities",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "rewardToken",
+                "type": "address"
+            },
+            {
+                "internalType": "uint32",
+                "name": "startTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "lastingTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "lastUpdateTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint32",
+                "name": "finishTime",
+                "type": "uint32"
+            },
+            {
+                "internalType": "uint128",
+                "name": "rewardRate",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint96",
+                "name": "projectID",
+                "type": "uint96"
+            },
+            {
+                "internalType": "uint256",
+                "name": "accreward",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint128",
+                "name": "rewardAmount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "uint128",
+                "name": "totalStaked",
+                "type": "uint128"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "activityNum",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint96",
+                        "name": "projectID",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lastingTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "rewardAmount",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "staketoken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint88",
+                        "name": "tid",
+                        "type": "uint88"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isMultiToken",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isChainToken",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewardToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IMultiStaker.CreateActivityParams",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "addActivity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "activityId",
+                "type": "uint256"
+            }
+        ],
+        "name": "claimReward",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "claimableReward",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "factory",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            }
+        ],
+        "name": "rewardPerToken",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            }
+        ],
+        "name": "stake",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "stakedTokens",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "uint88",
+                "name": "tid",
+                "type": "uint88"
+            },
+            {
+                "internalType": "bool",
+                "name": "isMultiToken",
+                "type": "bool"
+            },
+            {
+                "internalType": "bool",
+                "name": "isChainToken",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "userAssets",
+        "outputs": [
+            {
+                "internalType": "uint128",
+                "name": "amount",
+                "type": "uint128"
+            },
+            {
+                "internalType": "int128",
+                "name": "debt",
+                "type": "int128"
+            },
+            {
+                "internalType": "uint256",
+                "name": "paid",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "activityID",
+                "type": "uint256"
+            }
+        ],
+        "name": "withdraw",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+]

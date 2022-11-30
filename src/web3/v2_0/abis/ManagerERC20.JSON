@@ -1,0 +1,295 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "uint8",
+                "name": "pm_id",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "pid",
+                "type": "uint256"
+            }
+        ],
+        "name": "ProjectCreated",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "PM_ID",
+        "outputs": [
+            {
+                "internalType": "uint8",
+                "name": "",
+                "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint96",
+                        "name": "projectID",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "startTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint32",
+                        "name": "lastingTime",
+                        "type": "uint32"
+                    },
+                    {
+                        "internalType": "uint96",
+                        "name": "rewardAmount",
+                        "type": "uint96"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "staketoken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint88",
+                        "name": "tid",
+                        "type": "uint88"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isMultiToken",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "bool",
+                        "name": "isChainToken",
+                        "type": "bool"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "rewardToken",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "address",
+                        "name": "from",
+                        "type": "address"
+                    }
+                ],
+                "internalType": "struct IMultiStaker.CreateActivityParams",
+                "name": "params",
+                "type": "tuple"
+            }
+        ],
+        "name": "createActivity",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "activityId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "token0",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "token1",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "projectID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "feeRate",
+                "type": "uint256"
+            }
+        ],
+        "name": "createPool",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "poolId",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "name_",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "symbol_",
+                "type": "string"
+            },
+            {
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "to",
+                "type": "address"
+            }
+        ],
+        "name": "createProject",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "projectID",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "staker_",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "pool",
+                "type": "address"
+            }
+        ],
+        "name": "initialize",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "projectNum",
+        "outputs": [
+            {
+                "internalType": "uint88",
+                "name": "",
+                "type": "uint88"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "projects",
+        "outputs": [
+            {
+                "internalType": "uint96",
+                "name": "pid",
+                "type": "uint96"
+            },
+            {
+                "internalType": "address",
+                "name": "token",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "owner",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "staker",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "swapPool",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
