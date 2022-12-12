@@ -237,7 +237,6 @@ export async function getChainId() {
     }
 }
 
-// 区别是否登录了钱包
 export function getChainIdNetwork() {
     return new Promise((resolve) => {
         try {

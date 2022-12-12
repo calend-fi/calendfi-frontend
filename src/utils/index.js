@@ -2,9 +2,6 @@ import { ethers } from 'ethers';
 let parseUnits = ethers.utils.parseUnits;
 let formatUnits = ethers.utils.formatUnits;
 
-/**
- * 格式化数字
- */
 function trimExtraChar(value, _char, regExp) {
     let index = value.indexOf(_char);
     if (index === -1) {
@@ -354,9 +351,9 @@ export const formatDollarAmount = (val) => {
             return 0;
         } else {
             const list = [
-                { value: 1 * 1000 * 1000 * 1000, symbol: "b" }, // 十亿
-                { value: 1 * 1000 * 1000, symbol: "m" }, // 百万
-                { value: 1 * 1000, symbol: "k" }, // 千
+                { value: 1 * 1000 * 1000 * 1000, symbol: "b" }, 
+                { value: 1 * 1000 * 1000, symbol: "m" }, 
+                { value: 1 * 1000, symbol: "k" }, 
                 { value: 1, symbol: "" },
             ]
             let i
@@ -372,9 +369,7 @@ export const formatDollarAmount = (val) => {
     }
 }
 
-//全局页面跳转是否启用loading
 export const routerLoading = false;
  
-//全局api接口调用是否启用loading
 export const apiLoading = false;
  

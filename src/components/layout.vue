@@ -19,7 +19,7 @@ export default {
     },
     data() {
         return {
-            connectWalletStatus: 0, // -1 失败, 0尚未链接, 1 成功;
+            connectWalletStatus: 0, // -1 error, 0 not connect, 1 success;
         }
     },
     computed: {
