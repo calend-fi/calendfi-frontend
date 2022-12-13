@@ -104,7 +104,7 @@ export default {
         backToWalletSelection() {
             this.$emit('setConnectWalletStatus', 0);
             this.errorConnecting = false;
-            this.showWalletList = true;
+            this.$store.commit('setShowWalletListDialogValue', true)
         },
 
     },

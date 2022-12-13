@@ -139,7 +139,7 @@ export default {
             height: 36px;
             border-radius: 12px;
             padding: 0 11px 0 10px;
-            cursor: pointer;
+            cursor: default;
 
 
             .icon1 {

@@ -81,6 +81,7 @@ export default {
             });
         },
         async setConnectedStateInfo(wallet) {
+            this.$store.commit('setShowWalletListDialogValue', false)
             let info = {
                 address: "",
                 balance: "",

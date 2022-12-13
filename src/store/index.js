@@ -22,8 +22,7 @@ const store = new Vuex.Store({
     },
     getters: {
         showWalletListDialog: state => {
-            // return state.showWalletListDialog && !state.wallet_info.address
-            return state.showWalletListDialog;
+            return state.showWalletListDialog && !state.wallet_info.address
         },
         walletInfo: state => state.wallet_info,
         walletName: state => state.walletName,
