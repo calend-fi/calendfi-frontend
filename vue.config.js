@@ -23,6 +23,7 @@ fs.writeFile("./public/calendVersion.js", content, function(err) {
 
 
 module.exports = {
+    transpileDependencies: ["/@meshsdk/"],
     publicPath: '',
     outputDir: "calend-dist",
     productionSourceMap: false,
