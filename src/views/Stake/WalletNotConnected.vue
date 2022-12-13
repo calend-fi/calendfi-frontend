@@ -3,7 +3,7 @@
         <div class="inner">
             <h2 class="h2">Please, connect your wallet</h2>
             <p class="p">We couldn’t detect a wallet. Connect a wallet to stake and view your balance.</p>
-            <button class="" tabindex="0" type="button">Connect wallet </button>
+            <button class="" tabindex="0" type="button" @click="$store.commit('setShowWalletListDialogValue', true)">Connect wallet </button>
             <div class="apr flex aic jcc">
                 <div class="item flex aic jcsb">
                     <div class="col1 flex aic">

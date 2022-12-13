@@ -13,15 +13,15 @@
             </div>
         </div>
         <div class="fr flex aic">
-            <el-button v-if="!walletInfo.address" class="flex aic jcc connect-wallet-btn" @click="showWalletList=true; ">Connect Wallet</el-button>
+            <el-button v-if="!walletInfo.address" class="flex aic jcc connect-wallet-btn" @click="$store.commit('setShowWalletListDialogValue', true)">Connect Wallet</el-button>
             <template v-else>
                 <div class="chain flex aic">
-                    <img :src="netWorkImg[walletInfo.chainId]" alt="" class="icon1">
-                    <span class="name">{{chainName[walletInfo.chainId]}}</span>
+                    <img src="@/assets/imgs/page-header/1.svg" alt="" class="icon1">
+                    <span class="name">Cardano</span>
                     <img src="@/assets/imgs/page-header/2.svg" alt="" class="icon2">
                 </div>
                 <div class="wallet-info flex aic">
-                    <div class="balance">{{$formatUnits(walletInfo.balance,18)|fixedFormatNum(4)}} {{tokenName[walletInfo.chainId]}}</div>
+                    <div class="balance">{{walletInfo.balance[0].quantity}} ADA</div>
                     <span class="address">{{walletInfo.address|addressFilter}}</span>
                 </div>
             </template>
@@ -29,64 +29,19 @@
                 <img src="@/assets/imgs/page-header/3.svg" alt="">
             </div>
         </div>
-        <el-dialog title="Connect a wallet" :visible.sync="showWalletList" width="400px" :modal-append-to-body="true" append-to-body custom-class="wallet-list-dialog" :close-on-click-modal="false">
-            <div class="wallet-list">
-                <div class="wallet-item MetaMask" @click="connectWallet('MetaMask')">
-                    <img src="@/assets/imgs/page-header/metamask.svg" alt="">
-                    <span class="text">MetaMask</span>
-                </div>
-                <div class="wallet-item Coinbase" @click="connectWallet('Coinbase')">
-                    <img src="@/assets/imgs/page-header/coinbase.svg" alt="">
-                    <span class="text">Coinbase Wallet</span>
-                </div>
-                <div class="wallet-item WalletConnect" @click="connectWallet('WalletConnect')">
-                    <img src="@/assets/imgs/page-header/walletconnect.svg" alt="">
-                    <span class="text">WalletConnect</span>
-                </div>
-                <div class="wallet-item Binance" @click="connectWallet('Binance')">
-                    <img src="@/assets/imgs/page-header/binance.svg" alt="">
-                    <span class="text">Binance</span>
-                </div>
-            </div>
-        </el-dialog>
-        <el-dialog title="" :visible.sync="errorConnecting" width="400px" :modal-append-to-body="true" append-to-body custom-class="error-connecting-dialog" :close-on-click-modal="false">
-            <div class="back" slot="title">
-                <img src="@/assets/imgs/page-header/back.svg" alt="" @click="backToWalletSelection">
-            </div>
-            <img src="@/assets/imgs/page-header/warning.svg" alt="" class="warning">
-            <div class="p1">Error connecting</div>
-            <div class="p2">The connection attempt failed. Please click try again and follow the steps to connect in your wallet.</div>
-            <el-button class="try-again">Try Again</el-button>
-            <div class="p3" @click="backToWalletSelection">Back to wallet selection</div>
-        </el-dialog>
     </div>
 </template>
 <script>
-import { netWorkImg, tokenName, chainName } from "@/web3/common/web3Config.js"
-
 export default {
     name: 'PageHeader',
     watch: {
-        '$store.getters.walletInfo.address'(address) {
-            if (address) {
-                this.showWalletList = false;
-            }
-        },
-        connectWalletStatus(val) {
-            if (val == -1) {
-                this.showWalletList = false;
-                this.errorConnecting = true;
 
-            }
-        }
+
     },
     components: {},
     props: ['connectWalletStatus'],
     data() {
         return {
-            netWorkImg: netWorkImg,
-            tokenName: tokenName,
-            chainName: chainName,
             showWalletList: false,
             errorConnecting: false,
 
@@ -99,17 +54,9 @@ export default {
         walletInfo() {
             return this.$store.getters.walletInfo;
         },
-
     },
     methods: {
-        connectWallet(type) {
-            this.$emit('connectToWallet', type)
-        },
-        backToWalletSelection() {
-            this.$emit('setConnectWalletStatus', 0);
-            this.errorConnecting = false;
-            this.showWalletList = true;
-        }
+
     },
     filters: {}
 }
@@ -266,231 +213,4 @@ export default {
     }
 
 }
-</style>
-<style lang="scss">
-.wallet-list-dialog {
-    width: 418px;
-    min-height: 349px;
-    background: #0E111A;
-    border: 1px solid #293249;
-    box-shadow: 12px 16px 24px rgba(0, 0, 0, 0.24);
-    border-radius: 16px;
-
-    overflow: hidden;
-    margin: 0 !important;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    .el-dialog__header {
-        height: 55px;
-        padding: 0 0 0 16px;
-        display: flex;
-        align-items: center;
-        border-bottom: 0;
-
-        .el-dialog__title {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 15px;
-            line-height: 18px;
-            /* identical to box height */
-            color: #FFFFFF;
-        }
-
-        .el-dialog__headerbtn {
-            i {
-                color: #fff;
-                font-size: 24px;
-            }
-        }
-    }
-
-    .el-dialog__body {
-        padding: 0 16px;
-
-        .wallet-list {
-            .wallet-item {
-                display: flex;
-                align-items: center;
-                padding: 0 16px;
-                cursor: not-allowed;
-                height: 62px;
-                background: #293249;
-                border-radius: 12px;
-
-                &:not(:last-child) {
-                    margin-bottom: 10px;
-                }
-
-                img {
-                    width: 28px;
-                    margin-right: 12px;
-                }
-
-                .text {
-                    font-family: 'Roboto';
-                    font-style: normal;
-                    font-weight: 600;
-                    font-size: 16px;
-                    line-height: 19px;
-                    /* identical to box height */
-
-
-                    color: #FFFFFF;
-
-
-                }
-
-                &:hover {
-                    opacity: .85;
-                    // background: #FAFAFB;
-                }
-
-                &.Binance {
-                    img {
-                        width: 34px;
-                        margin-right: 8px;
-
-                    }
-                }
-
-                &.MetaMask {
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-}
-
-.error-connecting-dialog {
-    width: 418px;
-    min-height: 453px;
-    background: #0E111A;
-    border: 1px solid #293249;
-    box-shadow: 12px 16px 24px rgba(0, 0, 0, 0.24);
-    border-radius: 16px;
-
-
-    overflow: hidden;
-    margin: 0 !important;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    .el-dialog__header {
-        padding: 16px;
-
-        .back {
-            img {
-                cursor: pointer;
-
-            }
-
-        }
-
-        .el-dialog__title {}
-
-        .el-dialog__headerbtn {
-            i {
-                color: #fff;
-                font-size: 20px;
-            }
-        }
-    }
-
-    .el-dialog__body {
-        padding: 20px 32px 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        .warning {
-            margin-bottom: 32px;
-        }
-
-        .p1 {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 20px;
-            line-height: 23px;
-            color: #FFFFFF;
-            margin-bottom: 13px;
-
-        }
-
-        .p2 {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 21px;
-            /* or 131% */
-
-            text-align: center;
-
-            color: #FFFFFF;
-            margin-bottom: 32px;
-        }
-
-        .el-button {
-            width: 100%;
-            height: 59px;
-            background: #4C82FB;
-            border-radius: 12px;
-            border: 0;
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 20px;
-            line-height: 23px;
-            text-align: center;
-            color: #F5F6FC;
-            margin-bottom: 20px;
-
-            &:hover {
-                background: #3371FA;
-            }
-        }
-
-        .p3 {
-            font-family: 'Roboto';
-            font-style: normal;
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 16px;
-            text-align: center;
-            color: #4C82FB;
-            cursor: pointer;
-
-        }
-    }
-
-}
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 </style>

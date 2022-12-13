@@ -11,43 +11,38 @@ const store = new Vuex.Store({
         storage: window.localStorage
     })],
     state: {
+        showWalletListDialog: false,
         wallet_info: {
             address: "",
             balance: "",
-            chainId: "",
+            networkId: "",
         },
         walletName: '',
 
     },
     getters: {
+        showWalletListDialog: state => {
+            // return state.showWalletListDialog && !state.wallet_info.address
+            return state.showWalletListDialog;
+        },
         walletInfo: state => state.wallet_info,
         walletName: state => state.walletName,
-
-        provider: (state) => {
-            let provider = null;
-            switch (state.walletName) {
-                case 'BitKeep':
-                    provider = window.bitkeep && window.bitkeep.ethereum;
-                    break;
-                case 'MetaMask':
-                    provider = window.ethereum;
-                    break;
-                default:
-                    provider = window.ethereum;
-            }
-            if (!provider) {
-                console.warn("please install injected wallet");
-            }
-            return provider;
-        },
+        provider: () => window.cardano,
     },
     mutations: {
+        setShowWalletListDialogValue(state, value) {
+            state.showWalletListDialog = value;
+        },
+
         setWalletInfo(state, value) {
             state.wallet_info = Object.assign({}, state.wallet_info, value)
         },
         setWalletName(state, value) {
             state.walletName = value ? value : ''
         },
+
+
+
     }
 })
 

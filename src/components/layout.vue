@@ -1,21 +1,28 @@
 <template>
     <div id="app" class="app" oncontextmenu="return false;">
-        <page-header @connectToWallet="connectToWallet" :connect-wallet-status="connectWalletStatus" @setConnectWalletStatus="setConnectWalletStatus"></page-header>
+        <page-header></page-header>
         <div class="page-body">
             <el-scrollbar class="router-view-scrollbox" style="height:100%">
                 <router-view class="router-view" />
             </el-scrollbar>
         </div>
+        <connect-wallet-dialog :connect-wallet-status="connectWalletStatus" @connectToWallet="connectToWallet" @setConnectWalletStatus="setConnectWalletStatus"></connect-wallet-dialog>
     </div>
 </template>
 <script>
 import PageHeader from '@/components/PageHeader.vue'
-import { setChainChangedCallback, setAccountsChangedCallback, setDisconnectCallback, getWalletInfo, setUpSigner, connectToWallet } from "@/web3/common/wallet";
+import ConnectWalletDialog from '@/components/ConnectWalletDialog.vue'
+// import { setChainChangedCallback, setAccountsChangedCallback, setDisconnectCallback } from "@/web3/common/wallet";
+
+
+// import BrowserWallet
+import { BrowserWallet } from '@meshsdk/core';
 
 export default {
     name: 'Layout',
     components: {
         PageHeader,
+        ConnectWalletDialog
     },
     data() {
         return {
@@ -42,114 +49,64 @@ export default {
         setConnectWalletStatus(status) {
             this.connectWalletStatus = status;
         },
+        async init() {
+            if (this.walletName) {
+                BrowserWallet.enable(this.walletName).then((wallet) => {
+                    this.setConnectedStateInfo(wallet);
+                    // this.watchWalletconnectionStatus();
+                }).catch((error) => {
+                    console.error(error);
+                    this.setDisconnectedStateInfo();
+                })
+            }
+        },
         connectToWallet(type) {
-            this.$store.commit('setWalletName', type);
-            if (type === 'BitKeep' && !this.provider) {
-                // window.open("https://bitkeep.com/en/download?type=0&theme=light");
-                // this.$message.warning('please install BitKeep');
+            BrowserWallet.enable(type).then((wallet) => {
+                this.$store.commit('setWalletName', type);
+                this.connectWalletStatus = 1;
+                this.setConnectedStateInfo(wallet);
+                // this.watchWalletconnectionStatus();
+            }).catch((error) => {
+                console.error(error);
                 this.connectWalletStatus = -1;
-                return;
-            }
-            if (type === 'MetaMask' && (!this.provider || this.provider.isBitKeep)) {
-                // this.$message.warning('please install MetaMask');
-                this.connectWalletStatus = -1;
-
-                return;
-            }
-            connectToWallet(type).then(() => {
-                // console.log(`%c${'222222'}`, 'font-size:30px;color:#aa5ff0');
-                this.setConnectedStateInfo();
-                this.watchWalletconnectionStatus();
-                // this.connectWalletStatus = 1;
-
-            }).catch(() => {
-                console.error("Wallet connect failed.");
-                this.connectWalletStatus = -1;
-
+                this.setDisconnectedStateInfo();
             });
         },
         setDisconnectedStateInfo() {
             this.$store.commit('setWalletName', '');
-
             this.$store.commit('setWalletInfo', {
                 address: '',
-                network: '',
                 balance: '',
-                chainId: '',
+                networkId: '',
             });
         },
-        setConnectedStateInfo() {
-            getWalletInfo().then((info) => {
-                this.$store.commit('setWalletInfo', info);
-            });
+        async setConnectedStateInfo(wallet) {
+            let info = {
+                address: "",
+                balance: "",
+                networkId: "",
+            };
+            info.balance = await wallet.getBalance();
+            info.address = await wallet.getChangeAddress();
+            info.networkId = await wallet.getNetworkId();
+            this.$store.commit('setWalletInfo', info);
         },
-        setStateInfo(connectionStatus) {
-            if (connectionStatus == 'disconnected') {
-                this.setDisconnectedStateInfo();
-            } else if (connectionStatus == 'connected') {
-                setUpSigner(this.walletName);
-                this.setConnectedStateInfo();
-                this.watchWalletconnectionStatus();
-            }
-        },
-        async getBitKeepWalletInfo() {
-            console.log('try connect to bitkeep');
 
-            this.$store.commit('setWalletName', 'BitKeep');
-            if (this.provider) {
-                let accounts = await this.provider.request({ method: 'eth_accounts' });
-                if (accounts[0]) {
-                    this.setStateInfo('connected');
-                } else {
-                    throw 'get BitKeep wallet info error'
-                }
-            } else {
-                throw 'get BitKeep wallet info error'
-            }
-        },
-        async getMetaMaskWalletInfo() {
-            console.log('try connect to metamask');
-            this.$store.commit('setWalletName', 'MetaMask');
-            if (this.provider) {
-                let accounts = await this.provider.request({ method: 'eth_accounts' });
-                if (accounts[0]) {
-                    this.setStateInfo('connected');
-                } else {
-                    this.setStateInfo('disconnected');
-                }
-            } else {
-                this.setStateInfo('disconnected');
-                console.warn("please install injected wallet");
-            }
-        },
-        async init() {
-            try {
-                await this.getBitKeepWalletInfo();
-            } catch (e) {
-                console.log(e);
-                this.getMetaMaskWalletInfo();
-            }
-        },
-        watchWalletconnectionStatus() {
-            if (this.provider) {
-                this.provider.removeAllListeners();
-            }
-            setChainChangedCallback(() => {
-                window.location.reload();
-            }, this.provider);
-            setAccountsChangedCallback((accounts) => {
-                if (accounts[0]) {
-                    this.setConnectedStateInfo();
-                } else {
-                    this.setDisconnectedStateInfo();
-                }
-
-            }, this.provider);
-            setDisconnectCallback(() => {
-                this.setDisconnectedStateInfo();
-            }, this.provider);
-
-        },
+        /* watchWalletconnectionStatus() {
+             setChainChangedCallback(() => {
+                 window.location.reload();
+             }, this.provider);
+             setAccountsChangedCallback((accounts) => {
+                 if (accounts[0]) {
+                     this.setConnectedStateInfo();
+                 } else {
+                     this.setDisconnectedStateInfo();
+                 }
+             }, this.provider);
+             setDisconnectCallback(() => {
+                 this.setDisconnectedStateInfo();
+             }, this.provider);
+         },*/
 
     },
     watch: {}

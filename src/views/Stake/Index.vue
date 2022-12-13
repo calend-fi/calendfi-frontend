@@ -132,6 +132,7 @@ import WalletNotConnected from './WalletNotConnected.vue'
 import StakeToken from '@/components/StakeTokens'
 
 
+
 export default {
     name: 'Staking',
     mixins: [],
