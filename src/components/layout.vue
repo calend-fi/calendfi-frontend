@@ -14,9 +14,8 @@ import PageHeader from '@/components/PageHeader.vue'
 import ConnectWalletDialog from '@/components/ConnectWalletDialog.vue'
 // import { setChainChangedCallback, setAccountsChangedCallback, setDisconnectCallback } from "@/web3/common/wallet";
 
-
 // import BrowserWallet
-import { BrowserWallet } from '@meshsdk/core';
+import { BrowserWallet, Transaction } from '@meshsdk/core';
 
 export default {
     name: 'Layout',
@@ -80,6 +79,7 @@ export default {
                 networkId: '',
             });
         },
+
         async setConnectedStateInfo(wallet) {
             this.$store.commit('setShowWalletListDialogValue', false)
             let info = {
@@ -87,10 +87,97 @@ export default {
                 balance: "",
                 networkId: "",
             };
+
             info.balance = await wallet.getBalance();
             info.address = await wallet.getChangeAddress();
             info.networkId = await wallet.getNetworkId();
             this.$store.commit('setWalletInfo', info);
+        },
+        async stake() {
+            // add stake fun
+            // console.clear();
+            let [rewardAddress] = await wallet.getRewardAddresses();
+            console.log(rewardAddress);
+            let poolId = 'pool1z22x50lqsrwent6en0llzzs9e577rx7n3mv9kfw7udwa2rf42fa';
+            console.log(poolId);
+            console.log(Transaction);
+            const tx = new Transaction({
+                initiator: wallet,
+                parameters: {
+                    coinsPerUTxOSize: "4310",
+                    priceMem: 0.0577,
+                    priceStep: 721e-7,
+                    minFeeA: 44,
+                    minFeeB: 155381,
+                    keyDeposit: "2000000",
+                    poolDeposit: "500000000",
+                    //
+
+                    epoch: 0,
+                    maxTxSize: 16384,
+                    maxValSize: "5000",
+                    maxCollateralInputs: 3,
+                    decentralisation: 0,
+                    maxBlockSize: 98304,
+                    collateralPercent: 150,
+                    maxBlockHeaderSize: 1100,
+                    minPoolCost: "340000000",
+                    maxTxExMem: "16000000",
+                    maxTxExSteps: "10000000000",
+                    maxBlockExMem: "80000000",
+                    maxBlockExSteps: "40000000000"
+                },
+            });
+            console.log(`%c${'tx'}`, 'font-size:30px;color:#aa5ff0');
+            console.log(tx);
+            console.log(`%c${'wallet'}`, 'font-size:30px;color:#aa5ff0');
+            console.log(wallet);
+
+            try {
+                // tx.registerStake(rewardAddress);
+                // tx.delegateStake(rewardAddress, poolId);
+                // const unsignedTx = await tx.build();
+                // console.log(unsignedTx);
+                // const signedTx = await wallet.signTx(unsignedTx);
+                // console.log(signedTx);
+                // const txHash = await wallet.submitTx(signedTx);
+                // console.log(txHash);
+
+            } catch (e) {
+                console.log(e);
+            }
+
+            let lovelace = await wallet.getLovelace();
+            console.log({ lovelace });
+
+            try {
+                // tx.withdrawRewards(rewardAddress, '5428000000');
+                // const unsignedTx = await tx.build();
+                // console.log(unsignedTx);
+                // const signedTx = await wallet.signTx(unsignedTx);
+                // console.log(signedTx);
+                // const txHash = await wallet.submitTx(signedTx);
+                // console.log(txHash);
+
+            } catch (e) {
+                console.log(`%c${'error'}`, 'font-size:30px;color:#aa5ff0');
+                console.log(e);
+            }
+
+            /*  .sendLovelace(
+                     'addr_test1vpvx0sacufuypa2k4sngk7q40zc5c4npl337uusdh64kv0c7e4cxr',
+                     '20000000'
+                 );
+
+             const signedTx = await wallet.signTx(unsignedTx);
+             
+
+             console.log(txHash);*/
+
+            let assets = await wallet.getAssets();
+            console.log('assets');
+            console.log(assets);
+
         },
 
         /* watchWalletconnectionStatus() {

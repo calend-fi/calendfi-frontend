@@ -21,7 +21,7 @@
                     <img src="@/assets/imgs/page-header/2.svg" alt="" class="icon2">
                 </div>
                 <div class="wallet-info flex aic">
-                    <div class="balance">{{walletInfo.balance[0].quantity}} ADA</div>
+                    <div class="balance">{{$formatUnits(walletInfo.balance[0].quantity,6)}} ADA</div>
                     <span class="address">{{walletInfo.address|addressFilter}}</span>
                 </div>
             </template>
